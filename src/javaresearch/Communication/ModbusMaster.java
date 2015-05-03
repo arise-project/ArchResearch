@@ -8,6 +8,10 @@ package javaresearch.Communication;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+import java.util.Timer;
 
 
 /**
@@ -15,9 +19,37 @@ import java.util.Enumeration;
  * @author Eugene
  */
 public class ModbusMaster {
-    
+        
     // Our collection of classes that are subscribed as listeners of our
     protected Vector _listeners;
+    public Stack<ArrayList<Byte>> _sendBuffer;    
+    protected Timer _sendTimer;
+    protected Timer _responseTimer;
+    public Map<Byte, ArrayList<Byte>> _responsesMock; //todo: this mock responses should be removed after implement modbus
+    
+    public byte _currentAddr; //todo: mock
+    public byte _currentCommand; //todo: mock
+    
+    public ModbusMaster()
+    {
+        
+       _responsesMock = new HashMap<Byte, ArrayList<Byte>>();
+       _responsesMock.put((byte)1,  new ArrayList<Byte>(){{
+           add((byte)1);           
+           add((byte)2);
+           add((byte)3);
+           add((byte)4);
+           add((byte)5);
+       }});       
+       
+       _responsesMock.put((byte)2,  new ArrayList<Byte>(){{
+           add((byte)2);           
+           add((byte)1);
+           add((byte)2);
+           add((byte)3);
+           add((byte)4);
+       }});
+    }
     
     // Method for listener classes to register themselves
     public void addPackageReceivedEventListener(PackageReceivedEventInterface listener)
@@ -30,7 +62,7 @@ public class ModbusMaster {
     
     
     // "fires" the event
-    protected void firePackageReceivedEvent(ArrayList<Byte> packageData)
+    public void firePackageReceivedEvent(ArrayList<Byte> packageData)
     {
         if (_listeners != null && _listeners.isEmpty())
         {
@@ -44,28 +76,52 @@ public class ModbusMaster {
     
     public void Init()
     {
-        
+        InitPort();
+    }
+    
+    private void InitPort()
+    {
+        //todo: implement
     }
     
     public void Start()
     {
+         _sendTimer = new Timer();
+        _responseTimer = new Timer();
         
+        _sendTimer.schedule(new SendTask(this), 0, 400);
+        _responseTimer.schedule(new ResponseTask(this), 0, 200);
     }
     
     public void Stop()
     {
-        
+        _sendTimer.cancel();
+        _responseTimer.cancel();
     }
     
     
-    public void Send()
+    public void Send(ArrayList<Byte> packageData)
     {
-        
+        if(_sendBuffer == null)
+            _sendBuffer = new Stack<ArrayList<Byte>>();
+        _sendBuffer.add(packageData);
+    }   
+    
+    public ArrayList<Byte> Read()
+    {
+        //todo : read resonse there
+        ArrayList<Byte> response = _responsesMock.get(_currentAddr);
+        _currentAddr = 0;
+        _currentCommand = 0;
+        return response;
+    }   
+    
+    
+    public void SendInternal(ArrayList<Byte> bytes)
+    {
+        //todo: send request there
+        _currentAddr = bytes.get(0);
+        _currentCommand = bytes.get(1);
     }
-    
-    private void Read()
-    {
-        
-    }    
-    
+            
 }
