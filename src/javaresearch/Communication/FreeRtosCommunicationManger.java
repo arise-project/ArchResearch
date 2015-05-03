@@ -5,10 +5,16 @@
  */
 package javaresearch.Communication;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Eugene
  */
-public class FreeRtosCommunicationManger {
+public class FreeRtosCommunicationManger implements PackageReceivedEventInterface {
     
+    public void PackageReceived(ArrayList<Byte> packageData)
+    {
+        
+    }
 }

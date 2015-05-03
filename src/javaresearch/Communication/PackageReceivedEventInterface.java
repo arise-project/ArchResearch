@@ -11,10 +11,6 @@ import java.util.ArrayList;
  *
  * @author Eugene
  */
-public class VertexCommunicationManager implements PackageReceivedEventInterface {
-    
-    public void PackageReceived(ArrayList<Byte> packageData)
-    {
-        
-    }
+public interface PackageReceivedEventInterface {
+    void PackageReceived(ArrayList<Byte> packageData);
 }
