@@ -29,11 +29,12 @@ public class ModbusMaster {
     
     public byte _currentAddr; //todo: mock
     public byte _currentCommand; //todo: mock
+    protected int _postNumber;
     
     public ModbusMaster()
     {
         
-       _responsesMock = new HashMap<Byte, ArrayList<Byte>>();
+       _responsesMock = new HashMap<>();
        _responsesMock.put((byte)1,  new ArrayList<Byte>(){{
            add((byte)1);           
            add((byte)2);
@@ -74,14 +75,16 @@ public class ModbusMaster {
         }
     }
     
-    public void Init()
+    public void Init(int postNumber, PackageReceivedEventInterface listener)
     {
-        InitPort();
+        InitPort(postNumber);
+        addPackageReceivedEventListener(listener);
     }
     
-    private void InitPort()
+    private void InitPort(int postNumber)
     {
         //todo: implement
+        _postNumber = postNumber;
     }
     
     public void Start()

@@ -19,12 +19,12 @@ public class SendTask extends TimerTask  {
         _master = master;        
     }
     
+    @Override
     public void run() {
        ArrayList<Byte> bytes = _master._sendBuffer.pop();
        if(bytes != null && bytes.size() > 0)
        {
-           _master.SendInternal(bytes);
-           System.out.println("Send bytes");        
+           _master.SendInternal(bytes);           
        }       
     }
 
