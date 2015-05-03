@@ -16,7 +16,7 @@ import javaresearch.domain.Temperature;
  *
  * @author Eugene
  */
-public class VertexCommunicationManager implements PackageReceivedEventInterface {
+public class VertexCommunicationManager implements PackageReceivedEventInterface, CommunicationManagerInterface {
     
     protected ModbusMaster _master;
     protected ValueCalculator _calculator;
@@ -48,5 +48,10 @@ public class VertexCommunicationManager implements PackageReceivedEventInterface
             humidity = h;
             temperature = t;
         }});
+    }
+    
+    public Stack<SensorData> GetReceived()
+    {
+        return _received;
     }
 }

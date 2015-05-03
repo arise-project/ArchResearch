@@ -15,7 +15,7 @@ import javaresearch.domain.SensorData;
  *
  * @author Eugene
  */
-public class FreeRtosCommunicationManger implements PackageReceivedEventInterface {
+public class FreeRtosCommunicationManger implements PackageReceivedEventInterface, CommunicationManagerInterface {
     
     protected ModbusMaster _master;
     protected ValueCalculator _calculator;
@@ -45,5 +45,10 @@ public class FreeRtosCommunicationManger implements PackageReceivedEventInterfac
         }
         
         _received.add(_calculator.Calculate(data));
+    }
+    
+    public Stack<SensorData> GetReceived()
+    {
+        return _received;
     }
 }
