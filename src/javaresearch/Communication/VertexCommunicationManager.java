@@ -19,12 +19,10 @@ import javaresearch.domain.Temperature;
 public class VertexCommunicationManager implements PackageReceivedEventInterface, CommunicationManagerInterface {
     
     protected ModbusMaster _master;
-    protected ValueCalculator _calculator;
     public Stack<SensorData> _received;
     
     public VertexCommunicationManager()
     {
-        _calculator = new ValueCalculator();
         _master = new ModbusMaster();
         _master.Init(2, this);
     }
